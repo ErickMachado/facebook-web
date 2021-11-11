@@ -1,5 +1,6 @@
 import { AxiosError } from 'axios'
 import { api } from '../config/api'
+import { Profile } from '../@types/profile'
 
 type LoginPayload = {
   email: string
@@ -12,7 +13,10 @@ class AuthService {
 
     try {
       const payload = { ...credentials, redirectLink }
-      const { data } = await api.post('auth', payload)
+      const { data } = await api.post<{ token: string } & Profile>(
+        'auth',
+        payload
+      )
 
       return data
     } catch (error) {

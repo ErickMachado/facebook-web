@@ -19,6 +19,7 @@
 import { defineComponent } from 'vue'
 import { Button, InputField } from '../atoms'
 import { useAuth } from '../../store'
+import { translateError } from '../../utils/errorTranslate'
 
 export default defineComponent({
   components: { Button, InputField },
@@ -45,7 +46,7 @@ export default defineComponent({
       } catch (error) {
         this.$notify({
           title: 'Algo deu errado 😵‍💫',
-          text: (error as Error).message,
+          text: translateError((error as Error).message),
           type: 'error'
         })
       }
