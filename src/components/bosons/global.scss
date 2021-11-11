@@ -1,0 +1,57 @@
+:root {
+  font-size: 62.5%;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body,
+html,
+#app {
+  height: 100vh;
+  width: 100%;
+}
+
+body {
+  background: $background;
+  color: $dark;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.6rem;
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input,
+textarea {
+  color: $dark;
+  display: block;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.6rem;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: $primary;
+  display: block;
+  text-decoration: none;
+  width: max-content;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+[disabled] {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+ul {
+  list-style: none;
+}
