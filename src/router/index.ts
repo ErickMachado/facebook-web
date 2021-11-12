@@ -1,8 +1,8 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import Cookies from 'js-cookie'
-import { Auth, Feed } from '../components/pages'
+import { Auth, Feed, NotFound } from '../components/pages'
 
-const routes = [
+const routes: RouteRecordRaw[] = [
   {
     component: Auth,
     name: 'auth',
@@ -15,6 +15,11 @@ const routes = [
     },
     name: 'feed',
     path: '/'
+  },
+  {
+    component: NotFound,
+    name: 'not found',
+    path: '/:pathMatch(.*)*'
   }
 ]
 

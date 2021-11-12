@@ -43,6 +43,8 @@ export default defineComponent({
     async handleLogin() {
       try {
         await this.auth.login(this.credentials)
+
+        this.$router.push({ name: 'feed' })
       } catch (error) {
         this.$notify({
           title: 'Algo deu errado 😵‍💫',

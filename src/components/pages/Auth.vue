@@ -38,6 +38,30 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translate3d(-50px, 0, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translate3d(50px, 0, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
 .auth-page {
   align-items: center;
   display: grid;
@@ -46,6 +70,8 @@ export default defineComponent({
   width: 100%;
 
   &__presentation {
+    animation: fadeInRight 500ms ease forwards;
+
     > img {
       width: 250px;
     }
@@ -55,6 +81,11 @@ export default defineComponent({
       margin-top: 1.6rem;
       max-width: 480px;
     }
+  }
+
+  .auth-box {
+    animation: fadeInLeft 500ms ease backwards;
+    animation-delay: 500ms;
   }
 }
 </style>

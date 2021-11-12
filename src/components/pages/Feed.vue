@@ -6,6 +6,9 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
+  beforeMount() {
+    document.title = 'Facebook'
+  },
   name: 'Feed'
 })
 </script>
