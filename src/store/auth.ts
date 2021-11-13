@@ -8,6 +8,13 @@ type LoginPayload = {
   password: string
 }
 
+type RegisterPayload = {
+  email: string
+  name: string
+  password: string
+  username: string
+}
+
 const useAuth = defineStore('auth', {
   state: () => ({
     profile: {
@@ -30,6 +37,15 @@ const useAuth = defineStore('auth', {
         Cookies.set('facebook:token', token)
 
         this.SET_PROFILE(profile)
+      } catch (error) {
+        throw new Error((error as Error).message)
+      }
+    },
+    async register(payload: RegisterPayload) {
+      try {
+        await AuthService.register(payload)
+
+        return true
       } catch (error) {
         throw new Error((error as Error).message)
       }

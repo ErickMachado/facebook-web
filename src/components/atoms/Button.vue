@@ -45,7 +45,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .btn {
   align-items: center;
-  background: $gray-1;
+  background: $background;
   border: none;
   border-radius: 999px;
   display: flex;

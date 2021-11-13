@@ -7,16 +7,35 @@ type LoginPayload = {
   password: string
 }
 
+type RegisterPayload = {
+  email: string
+  name: string
+  password: string
+  username: string
+}
+
 class AuthService {
   async login(credentials: LoginPayload) {
-    const redirectLink = import.meta.env.VUE_APP_REDIRECT_URL
-
     try {
-      const payload = { ...credentials, redirectLink }
+      const payload = { ...credentials }
       const { data } = await api.post<{ token: string } & Profile>(
         'auth',
         payload
       )
+
+      return data
+    } catch (error) {
+      throw new Error((error as AxiosError).response?.data.error)
+    }
+  }
+
+  async register(payload: RegisterPayload) {
+    const redirectLink = import.meta.env.VITE_REDIRECT_LINK
+
+    console.log(redirectLink)
+
+    try {
+      const { data } = await api.post('profiles', { ...payload, redirectLink })
 
       return data
     } catch (error) {

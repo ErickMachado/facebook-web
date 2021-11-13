@@ -9,9 +9,15 @@
       <InputField type="password" placeholder="Senha" @input="setPassword" />
       <Button text="Entrar" primary :disabled="isButtonDisabled" />
     </form>
-    <a href="#" @click.prevent>Esqueceu a senha?</a>
+    <a href="#" @click.prevent="$emit('changeStep', 'RecoverStep')">
+      Esqueceu a senha?
+    </a>
     <hr />
-    <Button text="Criar nova conta" accent />
+    <Button
+      text="Criar nova conta"
+      accent
+      @click="$emit('changeStep', 'RegisterStep')"
+    />
   </div>
 </template>
 
@@ -39,6 +45,7 @@ export default defineComponent({
       isAuthenticating: false
     }
   },
+  emits: ['changeStep'],
   methods: {
     async handleLogin() {
       try {
