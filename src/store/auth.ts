@@ -50,6 +50,19 @@ const useAuth = defineStore('auth', {
         throw new Error((error as Error).message)
       }
     },
+    async fetchProfileData() {
+      try {
+        const token = Cookies.get('facebook:token')
+
+        if (!token) throw new Error('Unauthorized')
+
+        const profile = await AuthService.fetchProfileData(token)
+
+        this.SET_PROFILE(profile)
+      } catch (error) {
+        return Promise.reject()
+      }
+    },
     SET_PROFILE(profile: Profile) {
       this.profile = profile
     }

@@ -42,6 +42,20 @@ class AuthService {
       throw new Error((error as AxiosError).response?.data.error)
     }
   }
+
+  async fetchProfileData(token: string) {
+    try {
+      const { data } = await api.get<Profile>('/auth', {
+        headers: {
+          authorization: `bearer ${token}`
+        }
+      })
+
+      return data
+    } catch (error) {
+      throw new Error((error as AxiosError).response?.data.error)
+    }
+  }
 }
 
 export default new AuthService()

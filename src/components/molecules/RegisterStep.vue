@@ -82,7 +82,7 @@ export default defineComponent({
       this.user.email = email
     },
     setName(name: string) {
-      this.user.name = name
+      this.user.name = name.toLowerCase()
     },
     setPassword(password: string) {
       this.user.password = password

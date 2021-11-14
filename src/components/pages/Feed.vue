@@ -1,15 +1,26 @@
 <template>
-  <div class="feed-page"></div>
+  <div class="feed-page">
+    <Header />
+  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { useAuth } from '../../store'
+import { Header } from '../molecules'
 
 export default defineComponent({
-  beforeMount() {
+  async beforeMount() {
     document.title = 'Facebook'
+    await this.authStore.fetchProfileData()
   },
-  name: 'Feed'
+  components: { Header },
+  name: 'Feed',
+  setup() {
+    const authStore = useAuth()
+
+    return { authStore }
+  }
 })
 </script>
 

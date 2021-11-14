@@ -41,6 +41,7 @@ export type Profile = {
   created_at: string
   email: string
   id: string
+  name: string
   publications: Publication[]
   username: string
 }
