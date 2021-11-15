@@ -41,6 +41,12 @@ const useAuth = defineStore('auth', {
         throw new Error((error as Error).message)
       }
     },
+    async logout() {
+      Cookies.remove('facebook:token')
+      this.$reset()
+
+      return true
+    },
     async register(payload: RegisterPayload) {
       try {
         await AuthService.register(payload)
