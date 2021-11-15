@@ -1,3 +1,19 @@
+export type Comment = {
+  author: {
+    avatar: {
+      url: string
+    }
+  }
+  created_at: string
+  id: string
+  text: string
+}
+
+type Like = {
+  author_id: string
+  id: string
+}
+
 export type Publication = {
   author: {
     avatar: {
@@ -7,7 +23,9 @@ export type Publication = {
     name: string
   }
   created_at: string
+  comments: Comment[]
   image_url: string | null
   image_public_id: string | null
+  likes: Like[]
   subtitle: string | null
 }

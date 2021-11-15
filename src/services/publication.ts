@@ -16,6 +16,20 @@ class PublicationService {
       throw new Error((error as AxiosError).response?.data.message)
     }
   }
+
+  async fetchAllPublications(token: string) {
+    try {
+      const { data } = await api.get<Publication[]>('publications', {
+        headers: {
+          authorization: `bearer ${token}`
+        }
+      })
+
+      return data
+    } catch (error) {
+      throw new Error((error as AxiosError).response?.data.message)
+    }
+  }
 }
 
 export default new PublicationService()

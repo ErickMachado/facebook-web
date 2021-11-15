@@ -16,19 +16,6 @@ type RegisterPayload = {
 }
 
 const useAuth = defineStore('auth', {
-  state: () => ({
-    profile: {
-      avatar: null,
-      bio: null,
-      city: null,
-      created_at: '',
-      email: '',
-      id: '',
-      name: '',
-      publications: [],
-      username: ''
-    } as Profile
-  }),
   actions: {
     async login(credentials: LoginPayload) {
       try {
@@ -70,9 +57,27 @@ const useAuth = defineStore('auth', {
       }
     },
     SET_PROFILE(profile: Profile) {
-      this.profile = profile
+      this.$state.profile = profile
     }
-  }
+  },
+  getters: {
+    getProfile(state) {
+      return state.profile
+    }
+  },
+  state: () => ({
+    profile: {
+      avatar: null,
+      bio: null,
+      city: null,
+      created_at: '',
+      email: '',
+      id: '',
+      name: '',
+      publications: [],
+      username: ''
+    } as Profile
+  })
 })
 
 export default useAuth

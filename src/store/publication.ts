@@ -18,9 +18,24 @@ const usePublication = defineStore('publication', {
         throw new Error((error as Error).message)
       }
     },
+    async fetchAllPublications() {
+      const token = Cookies.get('facebook:token')
+
+      if (!token) throw new Error('Unauthorized')
+
+      const publications = await PublicationService.fetchAllPublications(token)
+
+      this.SET_PUBLICATIONS(publications)
+    },
     APPEND_PUBLICATION(publication: Publication) {
-      this.publications.unshift(publication)
+      this.$patch((state) => state.publications.unshift(publication))
+    },
+    SET_PUBLICATIONS(publications: Publication[]) {
+      this.$state.publications = publications
     }
+  },
+  getters: {
+    getPublications: (state) => state.publications
   },
   state: () => ({
     publications: [] as Publication[]

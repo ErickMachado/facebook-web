@@ -3,6 +3,7 @@
     <Header />
     <div class="feed-page__feed">
       <NewPublicationBox />
+      <PublicationsList :publications="getPublications" />
     </div>
   </div>
 </template>
@@ -11,37 +12,47 @@
 import { defineComponent } from 'vue'
 import { useAuth } from '../../store'
 import { Header } from '../molecules'
-import { NewPublicationBox } from '../organisms'
+import { NewPublicationBox, PublicationsList } from '../organisms'
+import { mapActions, mapState } from 'pinia'
+import { usePublication } from '../../store'
 
 export default defineComponent({
   async beforeMount() {
     document.title = 'Facebook'
-    await this.authStore.fetchProfileData()
+    await this.fetchProfileData()
+    await this.fetchAllPublications()
   },
-  components: { Header, NewPublicationBox },
-  name: 'Feed',
-  setup() {
-    const authStore = useAuth()
-
-    return { authStore }
-  }
+  components: { Header, NewPublicationBox, PublicationsList },
+  computed: {
+    ...mapState(usePublication, ['getPublications'])
+  },
+  methods: {
+    ...mapActions(usePublication, ['fetchAllPublications']),
+    ...mapActions(useAuth, ['fetchProfileData'])
+  },
+  name: 'Feed'
 })
 </script>
 
 <style lang="scss" scoped>
 .feed-page {
-  height: 100vh;
-
   &__feed {
     display: grid;
     grid-template-columns: 1fr 640px 1fr;
     grid-template-rows: 210px 1fr;
     height: calc(100% - 56px);
+    padding-bottom: 2.4rem;
   }
 
   .new-post-box {
     grid-column: 2;
     margin-top: 6.4rem;
+  }
+
+  .publications-list {
+    grid-column: 2;
+    grid-row: 2;
+    margin-top: 3.2rem;
   }
 }
 </style>

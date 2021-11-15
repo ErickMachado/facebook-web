@@ -99,6 +99,13 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
+"@types/date-fns@^2.6.0":
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/@types/date-fns/-/date-fns-2.6.0.tgz#b062ca46562002909be0c63a6467ed173136acc1"
+  integrity sha1-sGLKRlYgApCb4MY6ZGftFzE2rME=
+  dependencies:
+    date-fns "*"
+
 "@types/js-cookie@^3.0.0":
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/@types/js-cookie/-/js-cookie-3.0.0.tgz#6dcc3ab167251ace6964310789d8ea80f732a82c"
@@ -529,6 +536,11 @@ csstype@^2.6.8:
   resolved "https://registry.npmjs.org/csstype/-/csstype-2.6.18.tgz"
   integrity sha512-RSU6Hyeg14am3Ah4VZEmeX8H7kLwEEirXe6aU2IPfKNvhXwTflK5HQRDNI0ypQXoqmm+QPyG2IaPuQE5zMwSIQ==
 
+date-fns@*, date-fns@^2.25.0:
+  version "2.25.0"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.25.0.tgz#8c5c8f1d958be3809a9a03f4b742eba894fc5680"
+  integrity sha512-ovYRFnTrbGPD4nqaEqescPEv1mNwvt+UTqI3Ay9SzNtey9NZnYu6E2qCcBBgJ6/2VF1zGGygpyTDITqpQQ5e+w==
+
 debug@^4.1.1, debug@^4.3.2:
   version "4.3.2"
   resolved "https://registry.npmjs.org/debug/-/debug-4.3.2.tgz"
@@ -597,6 +609,11 @@ emmet@^2.3.0:
   dependencies:
     "@emmetio/abbreviation" "^2.2.2"
     "@emmetio/css-abbreviation" "^2.1.4"
+
+emoji-picker-element@^1.6.5:
+  version "1.8.2"
+  resolved "https://registry.yarnpkg.com/emoji-picker-element/-/emoji-picker-element-1.8.2.tgz#56ffa9d46be479c3ebdb38c0857dac343594d446"
+  integrity sha512-XNSuntOOz1+JBklOqj+tqJqbInp88i12JXv0ZyQNCaHlkAlUf7Ak9e857S/uVTFlVtA6pJ6qeXLxvMdrL0ngFQ==
 
 enquirer@^2.3.5:
   version "2.3.6"
@@ -1841,6 +1858,11 @@ vue-demi@*:
   resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.12.1.tgz#f7e18efbecffd11ab069d1472d7a06e319b4174c"
   integrity sha512-QL3ny+wX8c6Xm1/EZylbgzdoDolye+VpCXRhI2hug9dJTP3OUJ3lmiKN3CsVV3mOJKwFi0nsstbgob0vG7aoIw==
 
+vue-demi@^0.11.2:
+  version "0.11.4"
+  resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.11.4.tgz#6101992fe4724cf5634018a16e953f3052e94e2a"
+  integrity sha512-/3xFwzSykLW2HiiLie43a+FFgNOcokbBJ+fzvFXd0r2T8MYohqvphUyDQ8lbAwzQ3Dlcrb1c9ykifGkhSIAk6A==
+
 vue-eslint-parser@^8.0.1:
   version "8.0.1"
   resolved "https://registry.yarnpkg.com/vue-eslint-parser/-/vue-eslint-parser-8.0.1.tgz#25e08b20a414551531f3e19f999902e1ecf45f13"
@@ -1878,6 +1900,14 @@ vue@^3.2.16:
     "@vue/runtime-dom" "3.2.21"
     "@vue/server-renderer" "3.2.21"
     "@vue/shared" "3.2.21"
+
+vuemoji-picker@^0.0.7:
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/vuemoji-picker/-/vuemoji-picker-0.0.7.tgz#382d365e75644683dba0530945ed4495eaeb1708"
+  integrity sha512-Q0RM6qo67Px3evoY9EbEg7HzBuk+u3D+c9r4wMyU71GQQnDFKEo4ZmI7OVjonwkCyk/6C6RDpQAtGOwfahXkoA==
+  dependencies:
+    emoji-picker-element "^1.6.5"
+    vue-demi "^0.11.2"
 
 which@^2.0.1:
   version "2.0.2"

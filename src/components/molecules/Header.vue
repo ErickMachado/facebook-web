@@ -54,7 +54,7 @@
             <li class="dropdown__profile">
               <img :src="avatar" :alt="prettyName" />
               <div>
-                <h3>{{ authStore.profile.name }}</h3>
+                <h3>{{ getProfile.name }}</h3>
                 <span>Veja seu perfil</span>
               </div>
             </li>
@@ -108,17 +108,19 @@ import { defineComponent } from 'vue'
 import { useAuth } from '../../store'
 import { Search } from '../atoms'
 import DefaultAvatar from '../../assets/images/default-avatar.jpg'
+import { mapState, mapActions } from 'pinia'
 
 export default defineComponent({
   components: { Search },
   computed: {
+    ...mapState(useAuth, ['getProfile']),
     avatar(): string {
-      const { avatar } = this.authStore.profile
+      const { avatar } = this.getProfile
 
       return avatar ? avatar.url : DefaultAvatar
     },
     prettyName(): string {
-      const splitedName = this.authStore.profile.name.split(' ')
+      const splitedName = this.getProfile.name.split(' ')
 
       return `${splitedName[0]} ${splitedName[splitedName.length - 1]}`
     }
@@ -129,17 +131,13 @@ export default defineComponent({
     }
   },
   methods: {
+    ...mapActions(useAuth, ['logout']),
     handleLogout() {
-      this.authStore.logout()
+      this.logout()
       this.$router.push({ name: 'auth' })
     }
   },
-  name: 'Header',
-  setup() {
-    const authStore = useAuth()
-
-    return { authStore }
-  }
+  name: 'Header'
 })
 </script>
 
@@ -180,7 +178,7 @@ export default defineComponent({
 
           &::after {
             background: $primary;
-            bottom: -1rem;
+            bottom: -1.4rem;
             content: '';
             display: block;
             height: 0.3rem;
