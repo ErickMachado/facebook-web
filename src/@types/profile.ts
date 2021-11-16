@@ -2,20 +2,21 @@ type Avatar = {
   url: string
 }
 
-type Like = {
+export type Like = {
   author_id: string
   id: string
   publication_id: string
 }
 
-type Comment = {
+export type Comment = {
   author: {
-    avatar: Avatar
+    avatar: Avatar | null
     id: string
     name: string
   }
   created_at: string
   id: string
+  publication_id: string
   text: string
 }
 

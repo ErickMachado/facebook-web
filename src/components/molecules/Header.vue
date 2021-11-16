@@ -263,6 +263,7 @@ export default defineComponent({
   right: 0;
   top: 110%;
   width: max-content;
+  z-index: 10;
 
   li {
     align-items: center;

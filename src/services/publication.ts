@@ -1,8 +1,27 @@
 import { AxiosError } from 'axios'
-import { Publication } from '../@types/profile'
+import { Comment, Publication } from '../@types/profile'
 import { api } from '../config/api'
 
+type CreateCommentPayload = {
+  publication_id: string
+  text: string
+}
+
 class PublicationService {
+  async comment(token: string, payload: CreateCommentPayload) {
+    try {
+      const { data } = await api.post<Comment>('comments', payload, {
+        headers: {
+          authorization: `bearer ${token}`
+        }
+      })
+
+      return data
+    } catch (error) {
+      throw new Error((error as AxiosError).response?.data.message)
+    }
+  }
+
   async publish(token: string, payload: FormData) {
     try {
       const { data } = await api.post<Publication>('publications', payload, {

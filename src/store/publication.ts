@@ -1,10 +1,28 @@
 import Cookies from 'js-cookie'
 import { defineStore } from 'pinia'
-import { Publication } from '../@types/profile'
+import { Comment, Publication } from '../@types/profile'
 import PublicationService from '../services/publication'
+
+type CreateCommentPayload = {
+  publication_id: string
+  text: string
+}
 
 const usePublication = defineStore('publication', {
   actions: {
+    async comment(payload: CreateCommentPayload) {
+      const token = Cookies.get('facebook:token')
+
+      if (!token) throw new Error('Unauthorized')
+
+      try {
+        const comment = await PublicationService.comment(token, payload)
+
+        this.APPEND_COMMENT(comment)
+      } catch (error) {
+        throw new Error((error as Error).message)
+      }
+    },
     async publish(payload: FormData) {
       try {
         const token = Cookies.get('facebook:token')
@@ -28,7 +46,18 @@ const usePublication = defineStore('publication', {
       this.SET_PUBLICATIONS(publications)
     },
     APPEND_PUBLICATION(publication: Publication) {
-      this.$patch((state) => state.publications.unshift(publication))
+      this.$patch(({ publications }) => publications.unshift(publication))
+    },
+    APPEND_COMMENT(comment: Comment) {
+      this.$patch(({ publications }) => {
+        const publication = publications.find(
+          ({ id }) => id === comment.publication_id
+        )
+
+        if (!publication) return
+
+        publication.comments.push(comment)
+      })
     },
     SET_PUBLICATIONS(publications: Publication[]) {
       this.$state.publications = publications

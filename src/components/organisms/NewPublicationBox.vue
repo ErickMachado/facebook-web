@@ -1,7 +1,7 @@
 <template>
   <div class="new-post-box">
     <header class="new-post-box__header">
-      <img :src="avatar" :alt="authStore.profile.name" />
+      <img :src="avatarHandler(getProfile.avatar)" :alt="getProfile.name" />
       <div @click="isPublicationModalOpen = true">
         <span>No que voce esta pensando, {{ firstName }}?</span>
       </div>
@@ -30,20 +30,17 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { useAuth } from '../../store'
+import { mapState } from 'pinia'
 import DefaultAvatar from '../../assets/images/default-avatar.jpg'
 import { NewPublicationModal } from '../molecules'
+import { useAuth } from '../../store'
 
 export default defineComponent({
   components: { NewPublicationModal },
   computed: {
-    avatar(): string {
-      const { avatar } = this.authStore.profile
-
-      return avatar ? avatar.url : DefaultAvatar
-    },
+    ...mapState(useAuth, ['getProfile']),
     firstName(): string {
-      return this.authStore.profile.name.split(' ')[0]
+      return this.getProfile.name.split(' ')[0]
     }
   },
   data() {
@@ -51,12 +48,13 @@ export default defineComponent({
       isPublicationModalOpen: false
     }
   },
-  name: 'NewPublicationBox',
-  setup() {
-    const authStore = useAuth()
-
-    return { authStore }
-  }
+  methods: {
+    avatarHandler(avatar: { url: string } | null) {
+      if (!avatar) return DefaultAvatar
+      else return avatar.url
+    }
+  },
+  name: 'NewPublicationBox'
 })
 </script>
 

@@ -2,7 +2,10 @@
   <li class="publication-item">
     <header class="publication-item__header">
       <div class="publication-item__info">
-        <img :src="publicationAvatar" :alt="publication.author.name" />
+        <img
+          :src="avatarHandler(publication.author.avatar)"
+          :alt="publication.author.name"
+        />
         <div>
           <h3>{{ publication.author.name }}</h3>
           <div class="publication-item__time">
@@ -48,12 +51,13 @@
     </div>
     <div v-if="isCommentsVisible" class="publication-item__comment">
       <div class="publication-item__comment-input">
-        <img :src="avatar" :alt="getProfile.name" />
+        <img :src="avatarHandler(getProfile.avatar)" :alt="getProfile.name" />
         <div>
           <input
             v-model="commentText"
             type="text"
             placeholder="Escreva um comentário..."
+            @keypress.enter="handleCommentCreation"
           />
           <VuemojiPicker
             class="emoji-picker"
@@ -93,19 +97,14 @@ import ptBR from 'date-fns/locale/pt-BR'
 import { defineComponent, PropType } from 'vue'
 import { Publication } from '../../@types/profile'
 import DefaultAvatar from '../../assets/images/default-avatar.jpg'
-import { mapState } from 'pinia'
-import { useAuth } from '../../store'
+import { mapState, mapActions } from 'pinia'
+import { useAuth, usePublication } from '../../store'
 import { VuemojiPicker, EmojiClickEventDetail } from 'vuemoji-picker'
 
 export default defineComponent({
   components: { VuemojiPicker },
   computed: {
     ...mapState(useAuth, ['getProfile']),
-    avatar(): string {
-      const { avatar } = this.getProfile
-
-      return avatar ? avatar.url : DefaultAvatar
-    },
     formatedLikes(): string {
       const likesAmount = this.publication.likes.length
 
@@ -126,11 +125,6 @@ export default defineComponent({
     },
     isPublicationOwner(): boolean {
       return this.publication.author_id === this.getProfile.id
-    },
-    publicationAvatar(): string {
-      const { avatar } = this.publication.author
-
-      return avatar ? avatar.url : DefaultAvatar
     }
   },
   data() {
@@ -141,6 +135,7 @@ export default defineComponent({
     }
   },
   methods: {
+    ...mapActions(usePublication, ['comment']),
     avatarHandler(avatar: { url: string } | null) {
       if (!avatar) return DefaultAvatar
       else return avatar.url
@@ -153,6 +148,24 @@ export default defineComponent({
     },
     handleEmojiSelection({ unicode }: EmojiClickEventDetail) {
       this.commentText += unicode
+    },
+    async handleCommentCreation() {
+      try {
+        if (!this.commentText) return
+
+        await this.comment({
+          publication_id: this.publication.id,
+          text: this.commentText
+        })
+
+        this.commentText = ''
+      } catch (error) {
+        this.$notify({
+          title: 'Ops! Algo deu errado',
+          text: (error as Error).message,
+          type: 'error'
+        })
+      }
     },
     pluralize(number: number, singularWord: string, pluralWord: string) {
       if (number === 1) return singularWord
@@ -327,7 +340,10 @@ export default defineComponent({
   }
 
   &__comments-list {
-    margin-top: 1.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    margin-top: 2.4rem;
 
     > li {
       img {

@@ -2,7 +2,7 @@ export type Comment = {
   author: {
     avatar: {
       url: string
-    }
+    } | null
   }
   created_at: string
   id: string
