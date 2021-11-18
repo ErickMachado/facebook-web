@@ -9,9 +9,10 @@ export type Comment = {
   text: string
 }
 
-type Like = {
+export type Like = {
   author_id: string
   id: string
+  publication_id: string
 }
 
 export type Publication = {

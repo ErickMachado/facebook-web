@@ -36,8 +36,22 @@
     </div>
     <hr />
     <div class="publication-item__actions">
-      <button>
-        <img src="../../assets/icons/svg/like.svg" alt="" />
+      <button :class="{ 'has-liked': hasLiked }" @click="handleLike">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="#65676B"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path
+            d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3zM7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3"
+          ></path>
+        </svg>
         Curtir
       </button>
       <button @click="isCommentsVisible = !isCommentsVisible">
@@ -123,6 +137,14 @@ export default defineComponent({
         'comentários'
       )}`
     },
+    hasLiked(): boolean {
+      const { likes } = this.publication
+      const hasProfileId = likes.find(
+        ({ author_id }) => author_id === this.getProfile.id
+      )
+
+      return !!hasProfileId
+    },
     isPublicationOwner(): boolean {
       return this.publication.author_id === this.getProfile.id
     }
@@ -136,6 +158,7 @@ export default defineComponent({
   },
   methods: {
     ...mapActions(usePublication, ['comment']),
+    ...mapActions(usePublication, ['like']),
     avatarHandler(avatar: { url: string } | null) {
       if (!avatar) return DefaultAvatar
       else return avatar.url
@@ -167,6 +190,20 @@ export default defineComponent({
         })
       }
     },
+    async handleLike() {
+      try {
+        await this.like({
+          author_id: this.getProfile.id,
+          publication_id: this.publication.id
+        })
+      } catch (error) {
+        this.$notify({
+          title: 'Ops! Algo deu errado',
+          text: (error as Error).message,
+          type: 'error'
+        })
+      }
+    },
     pluralize(number: number, singularWord: string, pluralWord: string) {
       if (number === 1) return singularWord
       else return pluralWord
@@ -183,6 +220,23 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@keyframes like {
+  0% {
+    transform: scale(1.3) rotate(-45deg);
+    transform-origin: center;
+  }
+
+  90% {
+    transform: scale(1.3) rotate(-45deg);
+    transform-origin: center;
+  }
+
+  100% {
+    transform: scale(1) rotate(0);
+    transform-origin: center;
+  }
+}
+
 .publication-item {
   background: $white;
   border-radius: 0.8rem;
@@ -283,13 +337,26 @@ export default defineComponent({
       padding: 0.8rem;
       transition: background 300ms;
 
-      > img {
+      > img,
+      svg {
         margin-right: 0.8rem;
         width: 1.8rem;
       }
 
       &:hover {
         background: $background;
+      }
+
+      &.has-liked {
+        color: $primary;
+      }
+
+      &.has-liked > svg {
+        animation: like 1s forwards;
+      }
+
+      &.has-liked > svg > path {
+        stroke: $primary;
       }
     }
   }
