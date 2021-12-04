@@ -4,14 +4,14 @@
       <header>
         <h2>Criar publicação</h2>
         <div @click="handleCloseModal">
-          <img src="../../assets/icons/svg/close.svg" alt="" />
+          <img src="@/assets/icons/svg/close.svg" alt="" />
         </div>
       </header>
       <hr />
       <main>
         <div class="new-publication-modal__profile">
-          <img :src="avatar" :alt="authStore.profile.name" />
-          <p>{{ authStore.profile.name }}</p>
+          <img :src="avatarHandler(getProfile.avatar)" :alt="getProfile.name" />
+          <p>{{ getProfile.name }}</p>
         </div>
         <div class="new-publication-modal__textarea">
           <textarea
@@ -25,7 +25,7 @@
         >
           <div class="new-publication-modal__preview">
             <div @click="isImagePreviewOpen = false">
-              <img src="../../assets/icons/svg/close.svg" alt="" />
+              <img src="@/assets/icons/svg/close.svg" alt="" />
             </div>
             <p>Adicione uma imagem</p>
             <span>Ou arraste e solte</span>
@@ -41,10 +41,10 @@
           <h3>Adicionar a sua publicacao</h3>
           <ul>
             <li @click="isImagePreviewOpen = true">
-              <img src="../../assets/icons/svg/image.svg" alt="" />
+              <img src="@/assets/icons/svg/image.svg" alt="" />
             </li>
             <li>
-              <img src="../../assets/icons/svg/mood.svg" alt="" />
+              <img src="@/assets/icons/svg/mood.svg" alt="" />
             </li>
           </ul>
         </div>
@@ -61,33 +61,29 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { useAuth, usePublication } from '../../store'
-import DefaultAvatar from '../../assets/images/default-avatar.jpg'
-import { Button } from '../atoms'
+import { useAuth, usePublication } from '@/store'
+import { Button } from '@/components/atoms'
+import { avatarHandler } from '@/utils/avatarHandler'
+import { mapActions, mapState } from 'pinia'
 
 export default defineComponent({
   computed: {
-    avatar(): string {
-      const { avatar } = this.authStore.profile
-
-      return avatar ? avatar.url : DefaultAvatar
-    },
+    ...mapState(useAuth, ['getProfile']),
     firstName() {
-      return this.authStore.profile.name.split(' ')[0]
+      return this.getProfile.name.split(' ')[0]
     }
   },
   components: { Button },
-  data() {
-    return {
-      isImagePreviewOpen: false,
-      isPublishing: false,
-      publicationImageBlob: {} as null | File,
-      imagePreviewURL: '',
-      publicationSubtitle: ''
-    }
-  },
-  emits: ['close'],
+  data: () => ({
+    isImagePreviewOpen: false,
+    isPublishing: false,
+    publicationImageBlob: {} as File | null,
+    imagePreviewURL: '',
+    publicationSubtitle: ''
+  }),
   methods: {
+    ...mapActions(usePublication, ['publish']),
+    avatarHandler,
     handlePublicationImagePreview() {
       this.publicationImageBlob = (
         this.$refs.publicationImageInput as HTMLInputElement
@@ -104,7 +100,7 @@ export default defineComponent({
         formData.append('subtitle', this.publicationSubtitle)
         formData.append('image', this.publicationImageBlob || '')
 
-        await this.publicationStore.publish(formData)
+        await this.publish(formData)
 
         this.handleCloseModal()
       } catch (error) {
@@ -124,13 +120,7 @@ export default defineComponent({
       this.$emit('close')
     }
   },
-  name: 'NewPublicationModal',
-  setup() {
-    const authStore = useAuth()
-    const publicationStore = usePublication()
-
-    return { authStore, publicationStore }
-  }
+  name: 'NewPublicationModal'
 })
 </script>
 

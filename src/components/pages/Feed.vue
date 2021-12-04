@@ -11,11 +11,14 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { useAuth } from '../../store'
-import { Header } from '../molecules'
-import { NewPublicationBox, PublicationsList, StoriesList } from '../organisms'
+import { useAuth, usePublication } from '@/store'
+import { Header } from '@/components/molecules'
+import {
+  NewPublicationBox,
+  PublicationsList,
+  StoriesList
+} from '@/components/organisms'
 import { mapActions, mapState } from 'pinia'
-import { usePublication } from '../../store'
 
 export default defineComponent({
   async beforeMount() {

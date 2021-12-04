@@ -9,15 +9,15 @@
     <hr />
     <footer class="new-post-box__footer">
       <div>
-        <img src="../../assets/icons/svg/video.svg" alt="" />
+        <img src="@/assets/icons/svg/video.svg" alt="" />
         <span>Video ao vivo</span>
       </div>
       <div>
-        <img src="../../assets/icons/svg/image.svg" alt="" />
+        <img src="@/assets/icons/svg/image.svg" alt="" />
         <span>Foto/video</span>
       </div>
       <div>
-        <img src="../../assets/icons/svg/mood.svg" alt="" />
+        <img src="@/assets/icons/svg/mood.svg" alt="" />
         <span>Sentimento/atividade</span>
       </div>
     </footer>
@@ -31,9 +31,9 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { mapState } from 'pinia'
-import DefaultAvatar from '../../assets/images/default-avatar.jpg'
-import { NewPublicationModal } from '../molecules'
-import { useAuth } from '../../store'
+import { NewPublicationModal } from '@/components/molecules'
+import { useAuth } from '@/store'
+import { avatarHandler } from '@/utils/avatarHandler'
 
 export default defineComponent({
   components: { NewPublicationModal },
@@ -48,12 +48,7 @@ export default defineComponent({
       isPublicationModalOpen: false
     }
   },
-  methods: {
-    avatarHandler(avatar: { url: string } | null) {
-      if (!avatar) return DefaultAvatar
-      else return avatar.url
-    }
-  },
+  methods: { avatarHandler },
   name: 'NewPublicationBox'
 })
 </script>

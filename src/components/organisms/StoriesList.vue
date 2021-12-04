@@ -6,9 +6,9 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { StorieItem } from '../molecules'
+import { StorieItem } from '@/components/molecules'
 import { mapState } from 'pinia'
-import { useAuth } from '../../store'
+import { useAuth } from '@/store'
 
 export default defineComponent({
   components: { StorieItem },

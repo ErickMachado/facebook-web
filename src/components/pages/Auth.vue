@@ -1,7 +1,7 @@
 <template>
   <Container class="auth-page">
     <div class="auth-page__presentation">
-      <img src="../../assets/images/logo.svg" alt="Facebook" />
+      <img src="@/assets/images/logo.svg" alt="Facebook" />
       <p>
         O Facebook ajuda você a se conectar e compartilhar com as pessoas que
         fazem parte da sua vida.
@@ -14,8 +14,8 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import Cookies from 'js-cookie'
-import { Container } from '../bosons'
-import { AuthBox } from '../organisms'
+import { Container } from '@/components/bosons'
+import { AuthBox } from '@/components/organisms'
 
 export default defineComponent({
   beforeRouteEnter(to, from, next) {
@@ -27,11 +27,6 @@ export default defineComponent({
   components: { AuthBox, Container },
   created() {
     document.title = 'Facebook - entre ou cadastre-se'
-  },
-  data() {
-    return {
-      email: ''
-    }
   },
   name: 'Auth'
 })

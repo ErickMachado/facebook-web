@@ -1,11 +1,10 @@
 import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
+import path from 'path'
 import tsconfigPaths from 'vite-tsconfig-paths'
+import vue from '@vitejs/plugin-vue'
 
 export default defineConfig({
-  build: {
-    sourcemap: true
-  },
+  build: { sourcemap: true },
   css: {
     preprocessorOptions: {
       scss: {
@@ -15,5 +14,10 @@ export default defineConfig({
       }
     }
   },
-  plugins: [tsconfigPaths({ root: '.' }), vue()]
+  plugins: [tsconfigPaths({ root: '.' }), vue()],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, 'src')
+    }
+  }
 })

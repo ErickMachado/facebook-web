@@ -23,9 +23,11 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { Button, InputField } from '../atoms'
-import { useAuth } from '../../store'
-import { translateError } from '../../utils/errorTranslate'
+import { Button, InputField } from '@/components/atoms'
+import { useAuth } from '@/store'
+import { translateError } from '@/utils/errorTranslate'
+import { mapActions } from 'pinia'
+import { FeedbackTitle, NotificationType } from '@/@types/notification'
 
 export default defineComponent({
   components: { Button, InputField },
@@ -36,27 +38,25 @@ export default defineComponent({
       return !email || !password || password.length < 8 || this.isAuthenticating
     }
   },
-  data() {
-    return {
-      credentials: {
-        email: '',
-        password: ''
-      },
-      isAuthenticating: false
-    }
-  },
-  emits: ['changeStep'],
+  data: () => ({
+    credentials: {
+      email: '',
+      password: ''
+    },
+    isAuthenticating: false
+  }),
   methods: {
+    ...mapActions(useAuth, ['login']),
     async handleLogin() {
       try {
-        await this.auth.login(this.credentials)
+        await this.login(this.credentials)
 
         this.$router.push({ name: 'feed' })
       } catch (error) {
         this.$notify({
-          title: 'Algo deu errado 😵‍💫',
+          title: FeedbackTitle.ERROR,
           text: translateError((error as Error).message),
-          type: 'error'
+          type: NotificationType.ERROR
         })
       }
     },
@@ -67,12 +67,7 @@ export default defineComponent({
       this.credentials.password = password
     }
   },
-  name: 'LoginStep',
-  setup() {
-    const auth = useAuth()
-
-    return { auth }
-  }
+  name: 'LoginStep'
 })
 </script>
 

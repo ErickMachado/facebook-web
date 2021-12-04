@@ -8,15 +8,13 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { LoginStep, RecoverStep, RegisterStep } from '../molecules'
+import { LoginStep, RecoverStep, RegisterStep } from '@/components/molecules'
 
 export default defineComponent({
   components: { LoginStep, RecoverStep, RegisterStep },
-  data() {
-    return {
-      activeStep: 'LoginStep'
-    }
-  },
+  data: () => ({
+    activeStep: 'LoginStep'
+  }),
   methods: {
     changeStep(componentName: string) {
       this.activeStep = componentName

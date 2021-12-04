@@ -14,7 +14,7 @@
         </div>
       </div>
       <div v-if="isPublicationOwner" class="publication-item__dropdown">
-        <img src="../../assets/icons/svg/more-horizontal.svg" alt="" />
+        <img src="@/assets/icons/svg/more-horizontal.svg" alt="" />
       </div>
     </header>
     <main>
@@ -27,11 +27,11 @@
     </main>
     <div class="publication-item__interactions">
       <div class="publication-item__likes">
-        <img src="../../assets/icons/svg/like-reaction.svg" alt="" />
-        <span>{{ formatedLikes }}</span>
+        <img src="@/assets/icons/svg/like-reaction.svg" alt="" />
+        <span>{{ formattedLikes }}</span>
       </div>
       <div class="publication-item__comments">
-        <span>{{ formatedComments }}</span>
+        <span>{{ formattedComments }}</span>
       </div>
     </div>
     <hr />
@@ -55,11 +55,11 @@
         Curtir
       </button>
       <button @click="isCommentsVisible = !isCommentsVisible">
-        <img src="../../assets/icons/svg/comment.svg" alt="" />
+        <img src="@/assets/icons/svg/comment.svg" alt="" />
         Comentar
       </button>
       <button>
-        <img src="../../assets/icons/svg/share.svg" alt="" />
+        <img src="@/assets/icons/svg/share.svg" alt="" />
         Compartilhar
       </button>
     </div>
@@ -80,7 +80,7 @@
             @emojiClick="handleEmojiSelection"
           />
           <img
-            src="../../assets/icons/svg/emoji.svg"
+            src="@/assets/icons/svg/emoji.svg"
             alt=""
             @click="isEmojiPickerVisible = !isEmojiPickerVisible"
           />
@@ -109,33 +109,35 @@
 import { formatDistance } from 'date-fns'
 import ptBR from 'date-fns/locale/pt-BR'
 import { defineComponent, PropType } from 'vue'
-import { Publication } from '../../@types/profile'
-import DefaultAvatar from '../../assets/images/default-avatar.jpg'
+import { Publication } from '@/@types/profile'
 import { mapState, mapActions } from 'pinia'
-import { useAuth, usePublication } from '../../store'
+import { useAuth, usePublication } from '@/store'
 import { VuemojiPicker, EmojiClickEventDetail } from 'vuemoji-picker'
+import { avatarHandler } from '@/utils/avatarHandler'
 
 export default defineComponent({
   components: { VuemojiPicker },
   computed: {
     ...mapState(useAuth, ['getProfile']),
-    formatedLikes(): string {
+    formattedLikes(): string {
       const likesAmount = this.publication.likes.length
-
-      return `${likesAmount} ${this.pluralize(
+      const pluralizedLikes = `${likesAmount} ${this.pluralize(
         likesAmount,
         'curtida',
         'curtidas'
       )}`
-    },
-    formatedComments(): string {
-      const commentsAmount = this.publication.comments.length
 
-      return `${commentsAmount} ${this.pluralize(
+      return pluralizedLikes
+    },
+    formattedComments(): string {
+      const commentsAmount = this.publication.comments.length
+      const pluralizedComments = `${commentsAmount} ${this.pluralize(
         commentsAmount,
         'comentário',
         'comentários'
       )}`
+
+      return pluralizedComments
     },
     hasLiked(): boolean {
       const { likes } = this.publication
@@ -149,20 +151,15 @@ export default defineComponent({
       return this.publication.author_id === this.getProfile.id
     }
   },
-  data() {
-    return {
-      commentText: '',
-      isCommentsVisible: false,
-      isEmojiPickerVisible: false
-    }
-  },
+  data: () => ({
+    commentText: '',
+    isCommentsVisible: false,
+    isEmojiPickerVisible: false
+  }),
   methods: {
     ...mapActions(usePublication, ['comment']),
     ...mapActions(usePublication, ['like']),
-    avatarHandler(avatar: { url: string } | null) {
-      if (!avatar) return DefaultAvatar
-      else return avatar.url
-    },
+    avatarHandler,
     formatDate(date: string | Date) {
       return formatDistance(new Date(date), new Date(), {
         addSuffix: true,

@@ -1,58 +1,58 @@
 <template>
   <header class="header">
     <div class="header__search">
-      <img src="../../assets/images/logo-circle.svg" alt="Facebook" />
+      <img src="@/assets/images/logo-circle.svg" alt="Facebook" />
       <Search />
     </div>
     <nav class="nav">
       <ul class="nav__list">
         <li class="nav__item">
           <RouterLink :to="{ name: 'feed' }">
-            <img src="../../assets/icons/svg/home.svg" alt="" />
+            <img src="@/assets/icons/svg/home.svg" alt="" />
           </RouterLink>
         </li>
         <li class="nav__item">
           <RouterLink to="{ name: 'watch' }">
-            <img src="../../assets/icons/svg/watch.svg" alt="" />
+            <img src="@/assets/icons/svg/watch.svg" alt="" />
           </RouterLink>
         </li>
         <li class="nav__item">
           <RouterLink to="{ name: 'market' }">
-            <img src="../../assets/icons/svg/market.svg" alt="" />
+            <img src="@/assets/icons/svg/market.svg" alt="" />
           </RouterLink>
         </li>
         <li class="nav__item">
           <RouterLink to="{ name: 'groups' }">
-            <img src="../../assets/icons/svg/groups.svg" alt="" />
+            <img src="@/assets/icons/svg/groups.svg" alt="" />
           </RouterLink>
         </li>
         <li class="nav__item">
           <RouterLink to="{ name: 'games' }">
-            <img src="../../assets/icons/svg/games.svg" alt="" />
+            <img src="@/assets/icons/svg/games.svg" alt="" />
           </RouterLink>
         </li>
       </ul>
     </nav>
     <div class="header__profile-options">
       <RouterLink to="" class="header__profile-link">
-        <img :src="avatar" :alt="prettyName" />
+        <img :src="avatarHandler(getProfile.avatar)" :alt="prettyName" />
         {{ prettyName }}
       </RouterLink>
       <ul class="header__options">
         <li>
-          <img src="../../assets/icons/svg/menu.svg" alt="" />
+          <img src="@/assets/icons/svg/menu.svg" alt="" />
         </li>
         <li>
-          <img src="../../assets/icons/svg/messages.svg" alt="" />
+          <img src="@/assets/icons/svg/messages.svg" alt="" />
         </li>
         <li>
-          <img src="../../assets/icons/svg/bell.svg" alt="" />
+          <img src="@/assets/icons/svg/bell.svg" alt="" />
         </li>
         <li @click="isMenuVisible = !isMenuVisible">
-          <img src="../../assets/icons/svg/arrow-down.svg" alt="" />
+          <img src="@/assets/icons/svg/arrow-down.svg" alt="" />
           <ul v-show="isMenuVisible" class="dropdown">
             <li class="dropdown__profile">
-              <img :src="avatar" :alt="prettyName" />
+              <img :src="avatarHandler(getProfile.avatar)" :alt="prettyName" />
               <div>
                 <h3>{{ getProfile.name }}</h3>
                 <span>Veja seu perfil</span>
@@ -61,7 +61,7 @@
             <hr />
             <li class="dropdown__feedback">
               <div>
-                <img src="../../assets/icons/svg/alert.svg" alt="" />
+                <img src="@/assets/icons/svg/alert.svg" alt="" />
               </div>
               <div>
                 <h3>Dar feedback</h3>
@@ -71,28 +71,28 @@
             <hr />
             <li>
               <div>
-                <img src="../../assets/icons/svg/settings.svg" alt="" />
+                <img src="@/assets/icons/svg/settings.svg" alt="" />
               </div>
               <h3>Configurações e privacidade</h3>
-              <img src="../../assets/icons/svg/arrow-right.svg" alt="" />
+              <img src="@/assets/icons/svg/arrow-right.svg" alt="" />
             </li>
             <li>
               <div>
-                <img src="../../assets/icons/svg/help.svg" alt="" />
+                <img src="@/assets/icons/svg/help.svg" alt="" />
               </div>
               <h3>Ajuda e suporte</h3>
-              <img src="../../assets/icons/svg/arrow-right.svg" alt="" />
+              <img src="@/assets/icons/svg/arrow-right.svg" alt="" />
             </li>
             <li>
               <div>
-                <img src="../../assets/icons/svg/moon.svg" alt="" />
+                <img src="@/assets/icons/svg/moon.svg" alt="" />
               </div>
               <h3>Tela e acessibilidade</h3>
-              <img src="../../assets/icons/svg/arrow-right.svg" alt="" />
+              <img src="@/assets/icons/svg/arrow-right.svg" alt="" />
             </li>
             <li @click="handleLogout">
               <div>
-                <img src="../../assets/icons/svg/logout.svg" alt="" />
+                <img src="@/assets/icons/svg/logout.svg" alt="" />
               </div>
               <h3>Sair</h3>
             </li>
@@ -105,33 +105,27 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { useAuth } from '../../store'
-import { Search } from '../atoms'
-import DefaultAvatar from '../../assets/images/default-avatar.jpg'
+import { useAuth } from '@/store'
+import { Search } from '@/components/atoms'
+import { avatarHandler } from '@/utils/avatarHandler'
 import { mapState, mapActions } from 'pinia'
 
 export default defineComponent({
   components: { Search },
   computed: {
     ...mapState(useAuth, ['getProfile']),
-    avatar(): string {
-      const { avatar } = this.getProfile
-
-      return avatar ? avatar.url : DefaultAvatar
-    },
     prettyName(): string {
-      const splitedName = this.getProfile.name.split(' ')
+      const splittedName = this.getProfile.name.split(' ')
 
-      return `${splitedName[0]} ${splitedName[splitedName.length - 1]}`
+      return `${splittedName[0]} ${splittedName[splittedName.length - 1]}`
     }
   },
-  data() {
-    return {
-      isMenuVisible: false
-    }
-  },
+  data: () => ({
+    isMenuVisible: false
+  }),
   methods: {
     ...mapActions(useAuth, ['logout']),
+    avatarHandler,
     handleLogout() {
       this.logout()
       this.$router.push({ name: 'auth' })

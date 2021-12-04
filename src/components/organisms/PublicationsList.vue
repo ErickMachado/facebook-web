@@ -8,7 +8,7 @@
       />
     </ul>
     <div v-else>
-      <img src="../../assets/images/no-publications.svg" alt="" />
+      <img src="@/assets/images/no-publications.svg" alt="" />
       <h2>Nenhuma publicacao pra mostrar</h2>
       <p>Seja o primeiro a publicar algo</p>
     </div>
@@ -17,8 +17,8 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
-import { Publication } from '../../@types/profile'
-import { PublicationItem } from '../molecules'
+import { Publication } from '@/@types/profile'
+import { PublicationItem } from '@/components/molecules'
 
 export default defineComponent({
   components: { PublicationItem },
